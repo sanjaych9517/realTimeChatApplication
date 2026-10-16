@@ -1,14 +1,27 @@
 import express from "express"
 import dotenv from "dotenv"
 import connectDB from "./config/database.js";
-
+import userRoute from "./routes/userRoute.js"
+import cookieParser from "cookie-parser";
 dotenv.config({})
 
 const app = express();
 
-const PORT = process.env.PORT ||  8080
+const PORT = process.env.PORT || 5000
+ 
 
-app.listen(PORT, ()=> {
+// middleware
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(cookieParser())
+
+
+// routes
+
+
+app.use("/api/v1/user", userRoute);
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on ${PORT}`);
   connectDB();
-  console.log(`server is istening on ${PORT}`)
-})
+});
