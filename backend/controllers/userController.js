@@ -1,7 +1,7 @@
 import { User } from "../model/userModel.js"
 import bycript from "bcryptjs"
 import jwt from "jsonwebtoken"
-//  registration 
+//  registration ---------------------------------------------------------------------
 
 export const register = async (req, res) => {
     try {
@@ -53,7 +53,7 @@ export const register = async (req, res) => {
     }
 }
 
-// login 
+// login -----------------------------------------------------
 
 export const login = async (req, res) => {
     try {
@@ -93,14 +93,24 @@ export const login = async (req, res) => {
     }
 }
 
-// logout
+// logout --------------------------------------------------
 
 export const logout = (req, res) => {
     try {
         return res.status(200).cookie("token", "", { maxAge: 0 }).json({
             message: "logout succesfully"
         })
-    } catch(error) {
+    } catch (error) {
+        console.log(error)
+    }
+}
+// other users -------------------------------------------------------
+export const getOtherUsers = async (req, res) => {
+    try {
+        const loogeddInUserId = req.id
+        const otherUsers = await User.find({ _id: { $ne: loogeddInUserId } }).select("-password")
+        return res.status(200).json(otherUsers)
+    } catch (error) {
         console.log(error)
     }
 }
