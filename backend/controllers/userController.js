@@ -1,5 +1,5 @@
 import { User } from "../model/userModel.js"
-import bycript from "bcryptjs"
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken"
 //  registration ---------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ export const register = async (req, res) => {
                 success: false
             });
         }
-        const hashPassword = await bycript.hash(password, 18)
+        const hashPassword = await bcryptjs.hash(password, 10);
         //  profile photo
 
         await User.create({
@@ -71,7 +71,7 @@ export const login = async (req, res) => {
                 ststus: false
             })
         };
-        const isPasswordMatch = await bycript.compare(password, user.password)
+        const isPasswordMatch = await bcryptjs.compare(password, user.password);
         if (!isPasswordMatch) {
             return res.status(400).json({
                 message: "Incorrect userName or password",
@@ -82,12 +82,23 @@ export const login = async (req, res) => {
             userId: user._id
         }
         const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, { expiresIn: '7d' });
-        return res.status(200).cookie("token", token, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "strict" }).json({
-            _id: user._id,
-            userName: user.userName,
-            fullName: user.fullName,
-            profilePhoto: user.profilePhoto
-        })
+        return res
+          .status(200)
+          .cookie("token", token, {
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            sameSite: "strict",
+          })
+          .json({
+            message: "Login successful",
+            success: true,
+            user: {
+              _id: user._id,
+              userName: user.userName,
+              fullName: user.fullName,
+              profilePhoto: user.profilePhoto,
+            },
+          });
     } catch (error) {
         console.log(error)
     }

@@ -1,26 +1,47 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [user, setUser] = useState({
     fullName: "",
-    userNmae: "",
-    passwors: "",
+    userName: "",
+    password: "",
     conformPassword: "",
     gender: "",
   });
 
+  const navigate = useNavigate();
   const handleRadioButton = (selectedGender) => {
     setUser({ ...user, gender: selectedGender });
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(user);
+    try {
+      console.log(user);
+      const res = await axios.post(
+        `http://localhost:8080/api/v1/user/register`,
+        user,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        },
+      );
+      if (res.data.success) {
+        navigate("/login");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
     setUser({
       fullName: "",
-      userNmae: "",
-      passwors: "",
+      userName: "",
+      password: "",
       conformPassword: "",
       gender: "",
     });
@@ -50,8 +71,8 @@ const Signup = () => {
               <span className="text-base label-text">Username</span>
             </label>
             <input
-              value={user.userNmae}
-              onChange={(e) => setUser({ ...user, userNmae: e.target.value })}
+              value={user.userName}
+              onChange={(e) => setUser({ ...user, userName: e.target.value })}
               id="username"
               type="text"
               placeholder="UserName"
@@ -64,8 +85,8 @@ const Signup = () => {
               <span className="text-base label-text">Password</span>
             </label>
             <input
-              value={user.passwors}
-              onChange={(e) => setUser({ ...user, passwors: e.target.value })}
+              value={user.password}
+              onChange={(e) => setUser({ ...user, password: e.target.value })}
               id="password"
               type="password"
               placeholder="Password"

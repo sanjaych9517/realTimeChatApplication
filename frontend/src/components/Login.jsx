@@ -1,20 +1,50 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState  } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+
 
 const Login = () => {
   const [user, setUser] = useState({
-    userNmae: "",
-    passwors: "",
+    userName: "",
+    password: "",
   });
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    console.log(user);
-    setUser({
-      userNmae: "",
-      passwors: "",
-    });
-  };
+
+const navigate = useNavigate();
+
+const onSubmitHandler = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await axios.post(
+      "http://localhost:8080/api/v1/user/login",
+      user,
+      {
+        withCredentials: true,
+      },
+    );
+
+    console.log("Login response:", res.data);
+
+    if (res.data.success) {
+      toast.success(res.data.message || "Login successful!");
+
+      setUser({
+        userName: "",
+        password: "",
+      });
+
+      navigate("/home");
+    } else {
+      toast.error(res.data.message || "Login failed");
+    }
+  } catch (error) {
+    console.log("Login error:", error.response?.data || error.message);
+
+    toast.error(error.response?.data?.message || "Something went wrong");
+  }
+};
 
   return (
     <div className="flex flex-col mb-30 items-center justify-center min-h-screen px-4 mx-auto text-black font-serif">
@@ -28,10 +58,10 @@ const Login = () => {
             </label>
             <input
               id="username"
-              value={user.userNmae}
+              value={user.userName}
               type="text"
               placeholder="UserName"
-              onChange={(e) => setUser({ ...user, userNmae: e.target.value })}
+              onChange={(e) => setUser({ ...user, userName: e.target.value })}
               className="w-full input input-bordered h-10 px-3 bg-white/50 text-black placeholder-gray-500 rounded"
             />
           </div>
@@ -43,9 +73,9 @@ const Login = () => {
             <input
               id="password"
               type="password"
-              value={user.passwors}
+              value={user.password}
               placeholder="Password"
-              onChange={(e) => setUser({ ...user, passwors: e.target.value })}
+              onChange={(e) => setUser({ ...user, password: e.target.value })}
               className="w-full input input-bordered h-10 px-3 bg-white/50 text-black placeholder-gray-500 rounded"
             />
           </div>
