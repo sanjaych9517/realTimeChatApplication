@@ -1,18 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const [user, setUser] = useState({
+    fullName: "",
+    userNmae: "",
+    passwors: "",
+    conformPassword: "",
+    gender: "",
+  });
+
+  const handleRadioButton = (selectedGender) => {
+    setUser({ ...user, gender: selectedGender });
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(user);
+    setUser({
+      fullName: "",
+      userNmae: "",
+      passwors: "",
+      conformPassword: "",
+      gender: "",
+    });
+  };
   return (
     <div className="flex flex-col mb-30 items-center justify-center min-h-screen px-4 mx-auto text-black font-serif">
       <div className="w-full max-w-md p-6 rounded-lg shadow-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20 border border-gray-100">
         <h1 className="text-3xl font-bold text-center mb-6">Sign Up</h1>
 
-        <form action="">
+        <form action="" onSubmit={onSubmitHandler}>
           <div className="mb-3 text-xl font-medium">
             <label className="label p-2 " htmlFor="fullname">
               <span className="text-base label-text">Full Name</span>
             </label>
             <input
+              value={user.fullName}
+              onChange={(e) => setUser({ ...user, fullName: e.target.value })}
               id="fullname"
               type="text"
               placeholder="Full Name"
@@ -25,6 +50,8 @@ const Signup = () => {
               <span className="text-base label-text">Username</span>
             </label>
             <input
+              value={user.userNmae}
+              onChange={(e) => setUser({ ...user, userNmae: e.target.value })}
               id="username"
               type="text"
               placeholder="UserName"
@@ -37,6 +64,8 @@ const Signup = () => {
               <span className="text-base label-text">Password</span>
             </label>
             <input
+              value={user.passwors}
+              onChange={(e) => setUser({ ...user, passwors: e.target.value })}
               id="password"
               type="password"
               placeholder="Password"
@@ -49,9 +78,13 @@ const Signup = () => {
               <span className="text-base label-text">Confirm Password</span>
             </label>
             <input
+              value={user.conformPassword}
               id="conformpassword"
               type="password"
               placeholder="Confirm password"
+              onChange={(e) =>
+                setUser({ ...user, conformPassword: e.target.value })
+              }
               className="w-full input input-bordered h-10 px-3 bg-white/50 text-black placeholder-gray-500 rounded"
             />
           </div>
@@ -59,22 +92,31 @@ const Signup = () => {
           {/* Gender */}
           <div className="flex items-center justify-around my-4">
             <div className="flex items-center">
-              <span className="mr-2">Male</span>
+              <label htmlFor="male">
+                <span className="mr-2">Male</span>
+              </label>
               <input
                 type="radio"
                 name="gender"
                 value="male"
-                defaultChecked
                 className="radio"
+                id="male"
+                checked={user.gender === "male"}
+                onChange={() => handleRadioButton("male")}
               />
             </div>
             <div className="flex items-center">
-              <span className="mr-2">Female</span>
+              <label htmlFor="female">
+                <span className="mr-2">Female</span>
+              </label>
               <input
                 type="radio"
                 name="gender"
+                id="female"
                 value="female"
                 className="radio"
+                checked={user.gender === "female"}
+                onChange={() => handleRadioButton("female")}
               />
             </div>
           </div>
@@ -88,7 +130,10 @@ const Signup = () => {
           </p>
 
           <div>
-            <button className="w-full btn btn-block btn-sm mt-2 border border-slate-700 py-2 h-10 bg-black text-white hover:bg-gray-800 rounded">
+            <button
+              type="submit"
+              className="w-full btn btn-block btn-sm mt-2 border border-slate-700 py-2 h-10 bg-black text-white hover:bg-gray-800 rounded"
+            >
               Sign Up
             </button>
           </div>
