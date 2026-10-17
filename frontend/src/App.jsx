@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="bg-[url('https://static.vecteezy.com/system/resources/thumbnails/052/401/834/small/art-abstract-blurred-beautiful-spring-background-with-fresh-leaves-photo.jpg')] bg-cover bg-center min-h-screen p-4  h-screen flex justify-center items-center font-serif">
       <RouterProvider router={router} />
-      <h1>hellow</h1>
+     
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Signup = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 mx-auto text-black font-serif">
+    <div className="flex flex-col mb-30 items-center justify-center min-h-screen px-4 mx-auto text-black font-serif">
       <div className="w-full max-w-md p-6 rounded-lg shadow-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20 border border-gray-100">
         <h1 className="text-3xl font-bold text-center mb-6">Sign Up</h1>
 
