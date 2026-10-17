@@ -1,11 +1,31 @@
-import React from 'react'
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Home from "./components/Home";
 
-const App = () => {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+]);
+
+function App() {
   return (
-    <div>
-      <h1 className='bg-red-600'>hellow world</h1>
+    <div className="bg-[url('https://static.vecteezy.com/system/resources/thumbnails/052/401/834/small/art-abstract-blurred-beautiful-spring-background-with-fresh-leaves-photo.jpg')] bg-cover bg-center min-h-screen p-4  h-screen flex justify-center items-center font-serif">
+      <RouterProvider router={router} />
+      <h1>hellow</h1>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
