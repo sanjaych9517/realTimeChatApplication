@@ -1,0 +1,79 @@
+
+
+
+import React, { useState } from "react";
+import { IoIosSend } from "react-icons/io";
+import { FiSmile } from "react-icons/fi";
+
+const SendInput = () => {
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!message.trim()) return;
+
+    // TODO: Yahan backend/API se message send karna hai
+    console.log("Message:", message);
+
+    setMessage("");
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="flex w-full items-center gap-2 sm:gap-3"
+    >
+      {/* Emoji Button */}
+      <button
+        type="button"
+        aria-label="Choose emoji"
+        className="hidden h-11 w-11 shrink-0 items-center
+          justify-center rounded-xl text-slate-400
+          transition hover:bg-slate-800 hover:text-indigo-400
+          sm:flex"
+      >
+        <FiSmile size={22} />
+      </button>
+
+      {/* Message Input */}
+      <div
+        className="flex min-w-0 flex-1 items-center
+        rounded-2xl border border-slate-700/70
+        bg-slate-800/80 px-3 transition
+        focus-within:border-indigo-500
+        focus-within:ring-2 focus-within:ring-indigo-500/20
+        sm:px-4"
+      >
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a message..."
+          aria-label="Type a message"
+          className="min-w-0 flex-1 bg-transparent
+            py-3 text-sm text-white outline-none
+            placeholder:text-slate-500 sm:py-3.5 sm:text-base"
+        />
+      </div>
+
+      {/* Send Button */}
+      <button
+        type="submit"
+        disabled={!message.trim()}
+        aria-label="Send message"
+        className="flex h-11 w-11 shrink-0 items-center
+          justify-center rounded-xl bg-indigo-600
+          text-white shadow-lg shadow-indigo-950/30
+          transition duration-200 hover:bg-indigo-500
+          active:scale-95 disabled:cursor-not-allowed
+          disabled:bg-slate-700 disabled:text-slate-500
+          disabled:shadow-none sm:h-12 sm:w-12"
+      >
+        <IoIosSend size={25} />
+      </button>
+    </form>
+  );
+};
+
+export default SendInput;
