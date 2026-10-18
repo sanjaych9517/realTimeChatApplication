@@ -1,10 +1,9 @@
-
-
-
 import React from "react";
 import { FiCheck } from "react-icons/fi";
 
-const OtherUser = () => {
+const OtherUser = (props) => {
+  const user = props.user;
+
   const isOnline = true;
   const isSelected = false;
 
@@ -27,7 +26,7 @@ const OtherUser = () => {
           group-hover:ring-indigo-500 sm:h-12 sm:w-12"
         >
           <img
-            src="https://i.pinimg.com/originals/5a/e1/74/5ae174023bbb4a5dfe8baaf9aca8af7d.jpg?nii=t"
+            src={user?.profilePhoto}
             alt="User profile"
             className="h-full w-full object-cover"
             loading="lazy"
@@ -52,7 +51,7 @@ const OtherUser = () => {
             text-slate-100 transition
             group-hover:text-indigo-300 sm:text-base"
           >
-            Kapoor MERN Stack
+            {user?.fullName}
           </h3>
         </div>
 
