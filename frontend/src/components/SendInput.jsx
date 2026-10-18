@@ -1,27 +1,44 @@
-
-
-
 import React, { useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import { FiSmile } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { setMessages } from "../redux/messageSlice";
 
 const SendInput = () => {
   const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  const { selectedUser } = useSelector((store) => store.user);
+  const { messages } = useSelector((store) => store.message);
 
-  const handleSubmit = (e) => {
+  const onSubmitHamdler = async (e) => {
     e.preventDefault();
 
     if (!message.trim()) return;
 
-    // TODO: Yahan backend/API se message send karna hai
-    console.log("Message:", message);
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/api/v1/message/send/${selectedUser?._id}`,
+        { message },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        },
+      );
+      console.log("Message:", message);
+      dispatch(setMessages([...messages, res?.data.newMessage]));
+    } catch (error) {
+      console.log(error);
+    }
 
     setMessage("");
   };
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={onSubmitHamdler}
       className="flex w-full items-center gap-2 sm:gap-3"
     >
       {/* Emoji Button */}

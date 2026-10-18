@@ -35,9 +35,8 @@ const Login = () => {
           userName: "",
           password: "",
         });
-
+        dispatch(setAuthUser(res.data.user || res.data));
         navigate("/home");
-        dispatch(setAuthUser(res.data));
       } else {
         toast.error(res.data.message || "Login failed");
       }

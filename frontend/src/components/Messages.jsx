@@ -4,11 +4,12 @@ import useGetMessages from "../hooks/useGetMessages";
 import { useSelector } from "react-redux";
 
 const Messages = () => {
+const {  selectedUser } = useSelector((store) => store.user);
   useGetMessages();
   const { messages } = useSelector((store) => store.message);
   const messagesEndRef = useRef(null);
 
-  // FIX: [messages] ki jagah [messages?.length] kar diya hai
+  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -44,12 +45,13 @@ const Messages = () => {
         {messages.length === 0 ? (
           <div className="flex flex-1 items-center justify-center my-10">
             <p className="text-sm text-slate-400">
-              No messages yet. Send a message to start chatting!
+              Send a message to start chatting with{" "}
+              {selectedUser?.fullName || "user"}!!
             </p>
           </div>
         ) : (
-          messages.map((message) => {
-            return <Message key={message._id} message={message} />;
+          messages.map((message, index) => {
+            return <Message key={message._id || index} message={message} />;
           })
         )}
       </div>

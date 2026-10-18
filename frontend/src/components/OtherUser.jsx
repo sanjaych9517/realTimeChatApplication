@@ -1,15 +1,18 @@
 import React from "react";
 import { FiCheck } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import {  setSelectedUser } from "../redux/userSlice";
+import {  setSelectedUser,  } from "../redux/userSlice";
+
 
 const OtherUser = ({ user }) => {
+
   const dispatch = useDispatch();
  
 const { selectedUser } = useSelector((store) => store.user);
+const { messages } = useSelector((store) => store.message);
 
   const isOnline = true; ///
-  const isSelected = false;////
+  // const isSelected = false;////
   const selectedUserhandler = (user) => {
     console.log(user);
     dispatch(setSelectedUser(user));
@@ -68,7 +71,13 @@ const { selectedUser } = useSelector((store) => store.user);
           <FiCheck size={14} className="shrink-0 text-indigo-400" />
 
           <p className="truncate text-xs text-slate-400 sm:text-sm">
-            Hey! How are you doing?
+            {/* {messages && messages.length > 0
+              ? messages[messages.length - 1]?.message
+              : "No messages yet"} */}
+
+            <p className="truncate text-xs text-slate-400 sm:text-sm">
+              {user?.lastMessage?.message || "No messages yet"}
+            </p>
           </p>
         </div>
       </div>

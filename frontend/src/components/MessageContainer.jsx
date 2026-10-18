@@ -5,8 +5,12 @@ import React from "react";
 import { FiArrowLeft, FiPhone, FiVideo, FiMoreVertical } from "react-icons/fi";
 import Messages from "./Messages";
 import SendInput from "./SendInput";
+import { useSelector } from "react-redux";
 
 const MessageContainer = () => {
+const {  selectedUser } = useSelector((store) => store.user);
+
+
   return (
     <div
       className="flex h-full min-h-0 min-w-0 flex-1
@@ -35,8 +39,11 @@ const MessageContainer = () => {
         {/* Profile */}
         <div className="relative shrink-0">
           <img
-            src="https://i.pinimg.com/originals/5a/e1/74/5ae174023bbb4a5dfe8baaf9aca8af7d.jpg?nii=t"
-            alt="Kapoor profile"
+            src={
+              selectedUser?.profilePhoto ||
+              "https://i.pinimg.com/originals/5a/e1/74/5ae174023bbb4a5dfe8baaf9aca8af7d.jpg?nii=t"
+            }
+            alt={selectedUser?.fullName || "Profile"}
             className="h-10 w-10 rounded-full object-cover
               ring-2 ring-slate-700 sm:h-12 sm:w-12"
           />
@@ -54,7 +61,7 @@ const MessageContainer = () => {
             className="truncate text-sm font-bold
             text-white sm:text-base"
           >
-            Kapoor MERN Stack
+            {selectedUser?.fullName || "Select a user"}
           </h2>
 
           <p className="mt-0.5 text-xs text-emerald-400">Online</p>
