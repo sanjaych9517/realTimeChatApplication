@@ -1,16 +1,9 @@
-
-
 import React from "react";
 import { BsCheck2All } from "react-icons/bs";
 
-const Message = () => {
-  // Demo: true = apna message, false = receiver ka message
-  const isSender = true;
+const Message = ({message}) => {
 
-  const message = {
-    text: "Hey! You were the Chosen One!",
-    time: "12:45 PM",
-  };
+  const isSender = true;
 
   return (
     <div
@@ -44,7 +37,7 @@ const Message = () => {
             }`}
         >
           <p className="wrap-break text-sm leading-6 sm:text-base">
-            {message.text}
+            {message?.message}
           </p>
         </div>
 

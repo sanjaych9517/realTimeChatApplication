@@ -1,21 +1,30 @@
 import React from "react";
 import { FiCheck } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import {  setSelectedUser } from "../redux/userSlice";
 
-const OtherUser = (props) => {
-  const user = props.user;
+const OtherUser = ({ user }) => {
+  const dispatch = useDispatch();
+ 
+const { selectedUser } = useSelector((store) => store.user);
 
-  const isOnline = true;
-  const isSelected = false;
-
+  const isOnline = true; ///
+  const isSelected = false;////
+  const selectedUserhandler = (user) => {
+    console.log(user);
+    dispatch(setSelectedUser(user));
+  };
+// 
   return (
     <div
+      onClick={() => selectedUserhandler(user)}
       className={`group flex w-full min-w-0 items-center gap-3
         rounded-xl border p-3 transition-all duration-200
         cursor-pointer
         ${
-          isSelected
+          selectedUser?._id === user?._id
             ? "border-indigo-500/40 bg-indigo-500/15"
-            : "border-transparent hover:border-slate-700 hover:bg-slate-800"
+            : "border-transparent hover:border-slate-600 hover:bg-slate-700"
         }`}
     >
       {/* Avatar */}

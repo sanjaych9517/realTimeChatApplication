@@ -1,15 +1,27 @@
-
-
 import { useState } from "react";
 import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import OtherUsers from "./OtherUsers";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [showUsers, setShowUsers] = useState(true);
 
   const handleSearch = (e) => {
     e.preventDefault();
+  };
+
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/v1/user/logout`);
+      navigate(`/login`);
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -102,6 +114,7 @@ const Sidebar = () => {
       {/* Footer */}
       <div className="border-t border-slate-700/60 p-3 sm:p-4">
         <button
+          onClick={logoutHandler}
           type="button"
           className="flex w-full items-center justify-center
             gap-2 rounded-xl border border-slate-700

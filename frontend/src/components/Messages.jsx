@@ -1,16 +1,23 @@
-
-
 import React, { useEffect, useRef } from "react";
 import Message from "./Message";
+import useGetMessages from "../hooks/useGetMessages";
+import { useSelector } from "react-redux";
 
 const Messages = () => {
+  useGetMessages();
+  const { messages } = useSelector((store) => store.message);
   const messagesEndRef = useRef(null);
 
+  // FIX: [messages] ki jagah [messages?.length] kar diya hai
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, []);
+  }, [messages?.length]);
+
+  if (!Array.isArray(messages)) {
+    return null;
+  }
 
   return (
     <div
@@ -33,19 +40,18 @@ const Messages = () => {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex flex-col gap-3 sm:gap-4">
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
+      <div className="flex flex-1 flex-col gap-3 sm:gap-4 justify-center">
+        {messages.length === 0 ? (
+          <div className="flex flex-1 items-center justify-center my-10">
+            <p className="text-sm text-slate-400">
+              No messages yet. Send a message to start chatting!
+            </p>
+          </div>
+        ) : (
+          messages.map((message) => {
+            return <Message key={message._id} message={message} />;
+          })
+        )}
       </div>
 
       {/* Auto-scroll target */}
