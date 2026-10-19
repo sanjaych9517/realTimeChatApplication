@@ -1,19 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import OtherUsers from "./OtherUsers";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setOtherUsers } from "../redux/userSlice";
 
 const Sidebar = () => {
   const [showUsers, setShowUsers] = useState(true);
+  const [search, setSearch] = useState("");
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-  };
+  const { otherUsers } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    if (otherUsers && allUsers.length === 0) {
+      setAllUsers(otherUsers);
+    }
+  }, [otherUsers]);
 
   const navigate = useNavigate();
+
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`http://localhost:8080/api/v1/user/logout`);
@@ -22,6 +34,31 @@ const Sidebar = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const searchSubmitHandler = (e) => {
+    e.preventDefault();
+
+    
+    if (!search.trim()) {
+      dispatch(setOtherUsers(allUsers));
+      return;
+    }
+
+   
+    const conversationUser = allUsers?.find((user) =>
+      user.fullName.toLowerCase().includes(search.toLowerCase()),
+    );
+
+    if (conversationUser) {
+      
+      dispatch(setOtherUsers([conversationUser]));
+    } else {
+      toast.error("User not found");
+    }
+
+    
+    setSearch("");
   };
 
   return (
@@ -37,7 +74,7 @@ const Sidebar = () => {
       >
         <div className="min-w-0">
           <h2 className="text-lg font-bold tracking-wide sm:text-xl">
-            Messages
+            Chat-Application
           </h2>
           <p className="mt-1 text-xs text-slate-400">
             Connect with your friends
@@ -61,7 +98,7 @@ const Sidebar = () => {
       {/* Search */}
       <div className="p-3 sm:p-4">
         <form
-          onSubmit={handleSearch}
+          onSubmit={searchSubmitHandler}
           className="flex items-center gap-2 rounded-xl
             border border-slate-700 bg-slate-800/80 p-1.5
             transition focus-within:border-indigo-500
@@ -71,6 +108,8 @@ const Sidebar = () => {
 
           <input
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search conversations..."
             aria-label="Search conversations"
             className="min-w-0 flex-1 bg-transparent px-1

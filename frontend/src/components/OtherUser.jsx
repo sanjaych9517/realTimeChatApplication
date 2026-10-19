@@ -68,17 +68,9 @@ const { messages } = useSelector((store) => store.message);
         </div>
 
         <div className="mt-1 flex items-center gap-1.5">
-          <FiCheck size={14} className="shrink-0 text-indigo-400" />
+          {/* <FiCheck size={14} className="shrink-0 text-indigo-400" /> */}
 
-          <p className="truncate text-xs text-slate-400 sm:text-sm">
-            {/* {messages && messages.length > 0
-              ? messages[messages.length - 1]?.message
-              : "No messages yet"} */}
-
-            <p className="truncate text-xs text-slate-400 sm:text-sm">
-              {user?.lastMessage?.message || "No messages yet"}
-            </p>
-          </p>
+         
         </div>
       </div>
     </div>
