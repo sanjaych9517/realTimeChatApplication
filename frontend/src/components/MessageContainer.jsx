@@ -1,15 +1,26 @@
 
 
-
 import React from "react";
 import { FiArrowLeft, FiPhone, FiVideo, FiMoreVertical } from "react-icons/fi";
 import Messages from "./Messages";
 import SendInput from "./SendInput";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; 
+import { useNavigate } from "react-router-dom"; 
+import { setSelectedUser } from "../redux/userSlice"; 
 
 const MessageContainer = () => {
-const {  selectedUser } = useSelector((store) => store.user);
+  const { selectedUser } = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const useDispatchAction = useDispatch(); 
 
+  
+  const handleBackClick = () => {
+    
+    useDispatchAction(setSelectedUser(null));
+
+    
+    navigate("/home");
+  };
 
   return (
     <div
@@ -27,6 +38,7 @@ const {  selectedUser } = useSelector((store) => store.user);
         {/* Mobile Back Button */}
         <button
           type="button"
+          onClick={handleBackClick} // 
           aria-label="Back to contacts"
           className="flex h-9 w-9 shrink-0 items-center
             justify-center rounded-lg text-slate-300

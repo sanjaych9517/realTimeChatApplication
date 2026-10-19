@@ -18,13 +18,28 @@ const Sidebar = () => {
   
   const [allUsers, setAllUsers] = useState([]);
 
+// for protuct our route
+const navigate = useNavigate();
+
+  const { authUser } = useSelector((store) => store.user);
+
+  useEffect(() => {
+    if (!authUser) {
+      navigate("/login");
+    }
+  }, [authUser, navigate]);
+
+  if (!authUser) {
+    return null;
+  }
+
   useEffect(() => {
     if (otherUsers && allUsers.length === 0) {
       setAllUsers(otherUsers);
     }
   }, [otherUsers]);
 
-  const navigate = useNavigate();
+  
 
   const logoutHandler = async () => {
     try {
@@ -81,18 +96,7 @@ const Sidebar = () => {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setShowUsers(!showUsers)}
-          className="flex h-10 w-10 shrink-0 items-center
-            justify-center rounded-xl bg-slate-800
-            text-slate-300 transition hover:bg-indigo-600
-            hover:text-white md:hidden"
-          aria-label={showUsers ? "Hide contacts" : "Show contacts"}
-          aria-expanded={showUsers}
-        >
-          {showUsers ? <FaTimes /> : <FaBars />}
-        </button>
+        
       </div>
 
       {/* Search */}
