@@ -1,15 +1,32 @@
+
+
 import React, { useEffect, useRef } from "react";
 import Message from "./Message";
 import useGetMessages from "../hooks/useGetMessages";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setMessages } from "../redux/messageSlice"; // 👈 Import setMessages
 
 const Messages = () => {
-const {  selectedUser } = useSelector((store) => store.user);
+  const { selectedUser } = useSelector((store) => store.user);
   useGetMessages();
   const { messages } = useSelector((store) => store.message);
+  const { socket } = useSelector((store) => store.socket); // 👈 Redux se socket nikal lein
+  const dispatch = useDispatch();
   const messagesEndRef = useRef(null);
 
-  
+  // 🎧 Real-time message listener using Socket.io
+  useEffect(() => {
+    if (socket) {
+      socket.on("newMessage", (newMessage) => {
+        dispatch(setMessages([...messages, newMessage]));
+      });
+
+      return () => {
+        socket.off("newMessage");
+      };
+    }
+  }, [socket, messages, dispatch]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
