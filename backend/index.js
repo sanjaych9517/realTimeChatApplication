@@ -1,13 +1,16 @@
+
+
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import userRoute from "./routes/userRoute.js";
-import cookieParser from "cookie-parser";
 import messageRoute from "./routes/messageRoute.js";
-import cors from "cors"
-dotenv.config({});
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
-const app = express();
+import { app, server, io } from "./socket/socket.js";
+
+dotenv.config({});
 
 const PORT = process.env.PORT || 5000;
 
@@ -20,14 +23,14 @@ const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true,
 };
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 
 // routes
-
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/message", messageRoute);
 
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
   console.log(`Server is listening on ${PORT}`);
   connectDB();
 });
