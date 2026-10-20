@@ -1,24 +1,23 @@
 
-
 import React from "react";
 import { FiArrowLeft, FiPhone, FiVideo, FiMoreVertical } from "react-icons/fi";
 import Messages from "./Messages";
 import SendInput from "./SendInput";
-import { useSelector, useDispatch } from "react-redux"; 
-import { useNavigate } from "react-router-dom"; 
-import { setSelectedUser } from "../redux/userSlice"; 
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setSelectedUser } from "../redux/userSlice";
 
 const MessageContainer = () => {
   const { selectedUser } = useSelector((store) => store.user);
+  const { onlineUsers } = useSelector((store) => store.user); // 👈 1. onlineUsers ko Redux se nikal lein
   const navigate = useNavigate();
-  const useDispatchAction = useDispatch(); 
+  const useDispatchAction = useDispatch();
 
-  
+  // Check karein ki selected user online hai ya nahi
+  const isOnline = onlineUsers?.includes(selectedUser?._id);
+
   const handleBackClick = () => {
-    
     useDispatchAction(setSelectedUser(null));
-
-    
     navigate("/home");
   };
 
@@ -38,7 +37,7 @@ const MessageContainer = () => {
         {/* Mobile Back Button */}
         <button
           type="button"
-          onClick={handleBackClick} // 
+          onClick={handleBackClick}
           aria-label="Back to contacts"
           className="flex h-9 w-9 shrink-0 items-center
             justify-center rounded-lg text-slate-300
@@ -60,11 +59,14 @@ const MessageContainer = () => {
               ring-2 ring-slate-700 sm:h-12 sm:w-12"
           />
 
-          <span
-            className="absolute bottom-0 right-0 h-3 w-3
-            rounded-full border-2 border-slate-900
-            bg-emerald-400"
-          />
+          {/* 👈 2. Dynamic Green/Offline Indicator Dot */}
+          {isOnline && (
+            <span
+              className="absolute bottom-0 right-0 h-3 w-3
+              rounded-full border-2 border-slate-900
+              bg-emerald-400"
+            />
+          )}
         </div>
 
         {/* User Info */}
@@ -76,7 +78,12 @@ const MessageContainer = () => {
             {selectedUser?.fullName || "Select a user"}
           </h2>
 
-          <p className="mt-0.5 text-xs text-emerald-400">Online</p>
+          {/* 👈 3. Dynamic Text: Online ya Offline */}
+          <p
+            className={`mt-0.5 text-xs ${isOnline ? "text-emerald-400" : "text-slate-400"}`}
+          >
+            {isOnline ? "Online" : "Offline"}
+          </p>
         </div>
 
         {/* Actions */}
