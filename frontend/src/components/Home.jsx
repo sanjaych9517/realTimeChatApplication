@@ -12,6 +12,7 @@ const Home = () => {
   const { authUser } = useSelector((store) => store.user);
   const dispatch = useDispatch(); // 👈 dispatch initialize karein
   const apiUrl = import.meta.env.VITE_API_URL; // 👈 backend URL
+console.log(apiUrl)
 
   useEffect(() => {
     if (!authUser) {
