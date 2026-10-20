@@ -1,4 +1,3 @@
-
 import React from "react";
 import { FiArrowLeft, FiPhone, FiVideo, FiMoreVertical } from "react-icons/fi";
 import Messages from "./Messages";
