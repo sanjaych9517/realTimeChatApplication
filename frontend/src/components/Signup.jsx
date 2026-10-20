@@ -11,7 +11,7 @@ const Signup = () => {
     conformPassword: "",
     gender: "",
   });
-
+const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const handleRadioButton = (selectedGender) => {
     setUser({ ...user, gender: selectedGender });
@@ -22,7 +22,8 @@ const Signup = () => {
     try {
       console.log(user);
       const res = await axios.post(
-        `http://localhost:8080/api/v1/user/register`,
+        `${apiUrl}/api/v1/user/register`,
+        
         user,
         {
           headers: {

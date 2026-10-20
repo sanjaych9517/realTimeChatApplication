@@ -9,14 +9,15 @@ const useGetMessages = () => {
 
   // Sirf ID nikal rahe hain taaki har render par naya object reference issue na kare
   const selectedUserId = selectedUser?._id;
-
+const apiUrl = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchMessages = async () => {
       if (!selectedUserId) return;
       try {
         axios.defaults.withCredentials = true;
         const res = await axios.get(
-          `http://localhost:8080/api/v1/message/${selectedUserId}`,
+          `${apiUrl}/api/v1/message/${selectedUserId}`,
+       
         );
         console.log(res);
         dispatch(setMessages(res.data));

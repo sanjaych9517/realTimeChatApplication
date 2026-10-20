@@ -10,7 +10,7 @@ const SendInput = () => {
   const dispatch = useDispatch();
   const { selectedUser } = useSelector((store) => store.user);
   const { messages } = useSelector((store) => store.message);
-
+const apiUrl = import.meta.env.VITE_API_URL;
   const onSubmitHamdler = async (e) => {
     e.preventDefault();
 
@@ -18,7 +18,8 @@ const SendInput = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/message/send/${selectedUser?._id}`,
+        `${apiUrl}/api/v1/message/send/${selectedUser?._id}`,
+       
         { message },
         {
           headers: {

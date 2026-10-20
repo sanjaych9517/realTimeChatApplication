@@ -15,11 +15,11 @@ const Sidebar = () => {
   const { otherUsers } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
-  
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [allUsers, setAllUsers] = useState([]);
 
-// for protuct our route
-const navigate = useNavigate();
+  // for protuct our route
+  const navigate = useNavigate();
 
   const { authUser } = useSelector((store) => store.user);
 
@@ -39,11 +39,10 @@ const navigate = useNavigate();
     }
   }, [otherUsers]);
 
-  
-
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/v1/user/logout`);
+      const res = await axios.get(`${apiUrl}/api/v1/user/logout`);
+      
       navigate(`/login`);
       toast.success(res.data.message);
     } catch (error) {
@@ -54,25 +53,21 @@ const navigate = useNavigate();
   const searchSubmitHandler = (e) => {
     e.preventDefault();
 
-    
     if (!search.trim()) {
       dispatch(setOtherUsers(allUsers));
       return;
     }
 
-   
     const conversationUser = allUsers?.find((user) =>
       user.fullName.toLowerCase().includes(search.toLowerCase()),
     );
 
     if (conversationUser) {
-      
       dispatch(setOtherUsers([conversationUser]));
     } else {
       toast.error("User not found");
     }
 
-    
     setSearch("");
   };
 
@@ -95,8 +90,6 @@ const navigate = useNavigate();
             Connect with your friends
           </p>
         </div>
-
-        
       </div>
 
       {/* Search */}

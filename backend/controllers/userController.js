@@ -54,12 +54,12 @@ export const register = async (req, res) => {
 };
 
 // login -----------------------------------------------------
-
 export const login = async (req, res) => {
   try {
     const { userName, password } = req.body;
     if (!userName || !password) {
-      return res.status(201).json({
+      return res.status(400).json({
+        // 201 ki jagah 400 status zyaada behtar hai (Bad Request)
         message: "All fields are required",
         success: false,
       });
@@ -68,14 +68,14 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         message: "Incorrect userName or password",
-        ststus: false,
+        success: false, // Yahan 'ststus' ko 'success' kar diya hai
       });
     }
     const isPasswordMatch = await bcryptjs.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(400).json({
         message: "Incorrect userName or password",
-        ststus: false,
+        success: false, // Yahan bhi 'ststus' ko 'success' kar diya hai
       });
     }
     const tokenData = {
@@ -84,12 +84,14 @@ export const login = async (req, res) => {
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "7d",
     });
+
     return res
       .status(200)
       .cookie("token", token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "none",
+        secure: true,
       })
       .json({
         message: "Login successful",
@@ -103,6 +105,11 @@ export const login = async (req, res) => {
       });
   } catch (error) {
     console.log(error);
+    // Catch block mein response bhejna zaroori hai
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
   }
 };
 

@@ -10,7 +10,7 @@ const Login = () => {
     userName: "",
     password: "",
   });
-
+const apiUrl = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +19,8 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/v1/user/login",
+        `${apiUrl}/api/v1/user/login`,
+        
         user,
         {
           withCredentials: true,
